@@ -1,4 +1,4 @@
-package com.example.diary.feature_diary.dara.local
+package com.example.diary.feature_diary.data.local
 
 import androidx.room.*
 import com.example.diary.feature_diary.domain.model.Diary
