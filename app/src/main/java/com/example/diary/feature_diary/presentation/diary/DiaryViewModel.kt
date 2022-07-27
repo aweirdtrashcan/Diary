@@ -8,6 +8,7 @@ import com.example.diary.feature_diary.domain.use_case.DiaryUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
+import java.io.IOException
 import javax.inject.Inject
 
 @HiltViewModel
@@ -15,7 +16,7 @@ class DiaryViewModel @Inject constructor(
     private val diaryUseCases: DiaryUseCases
 ): ViewModel() {
 
-    var state = mutableStateOf(emptyList<Diary>())
+    var diariesList = mutableStateOf(emptyList<Diary>())
         private set
 
     var sharedFlow = MutableSharedFlow<DiaryEvent>()
@@ -23,15 +24,22 @@ class DiaryViewModel @Inject constructor(
 
     fun onEvent(event: DiaryEvent) {
         when(event) {
-            is DiaryEvent.InsertDiary -> {
-                viewModelScope.launch {
-                    diaryUseCases.insertDiary(event.diary)
-                }
+            DiaryEvent.GetAllDiaries -> {
+                getAllDiaries()
             }
-            is DiaryEvent.SaveDiary -> {
-                viewModelScope.launch {
-//                    diaryUseCases.getDiaryById(event.diary.id)
+        }
+    }
+
+    private fun getAllDiaries() {
+        viewModelScope.launch {
+            sharedFlow.emit(DiaryEvent.Loading)
+            try {
+                diaryUseCases.getDiaries().collect {
+                    diariesList.value = it
+                    sharedFlow.emit(DiaryEvent.Loaded)
                 }
+            } catch (e: IOException) {
+                sharedFlow.emit(DiaryEvent.Error(e.message.toString()))
             }
         }
     }
