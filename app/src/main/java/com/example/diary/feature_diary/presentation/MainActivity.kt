@@ -1,4 +1,4 @@
-package com.example.diary
+package com.example.diary.feature_diary.presentation
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
