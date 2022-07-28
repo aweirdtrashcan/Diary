@@ -4,7 +4,7 @@
     package="com.example.diary">
 
     <application
-        android:name=".DiaryApp"
+        android:name="com.aweirdtrashcan.diary.DiaryApp"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -15,7 +15,7 @@
         android:theme="@style/Theme.Diary"
         tools:targetApi="31">
         <activity
-            android:name=".feature_diary.presentation.MainActivity"
+            android:name="com.aweirdtrashcan.diary.feature_diary.presentation.MainActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.Diary">
