@@ -22,21 +22,35 @@ class DiaryViewModel @Inject constructor(
     var sharedFlow = MutableSharedFlow<DiaryEvent>()
         private set
 
+    private var tempDiary : Diary? = null
+
+    init {
+        getAllDiaries()
+    }
+
     fun onEvent(event: DiaryEvent) {
         when(event) {
-            DiaryEvent.GetAllDiaries -> {
-                getAllDiaries()
+            is DiaryEvent.DeleteDiary -> {
+                viewModelScope.launch {
+                    tempDiary = event.diary
+                    diaryUseCases.deleteDiary(event.diary)
+                    sharedFlow.emit(DiaryEvent.DiaryDeleted)
+                }
+            }
+            is DiaryEvent.RestoreDiary -> {
+                viewModelScope.launch {
+                    diaryUseCases.insertDiary(tempDiary ?: return@launch)
+                    tempDiary = null
+                }
             }
         }
     }
 
     private fun getAllDiaries() {
         viewModelScope.launch {
-            sharedFlow.emit(DiaryEvent.Loading)
             try {
                 diaryUseCases.getDiaries().collect {
                     diariesList.value = it
-                    sharedFlow.emit(DiaryEvent.Loaded)
                 }
             } catch (e: IOException) {
                 sharedFlow.emit(DiaryEvent.Error(e.message.toString()))

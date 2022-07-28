@@ -6,10 +6,7 @@ import com.example.diary.feature_diary.data.local.DiaryDao
 import com.example.diary.feature_diary.data.local.DiaryDb
 import com.example.diary.feature_diary.data.repository.DiaryRepositoryImpl
 import com.example.diary.feature_diary.domain.repository.DiaryRepository
-import com.example.diary.feature_diary.domain.use_case.DiaryUseCases
-import com.example.diary.feature_diary.domain.use_case.GetDiaries
-import com.example.diary.feature_diary.domain.use_case.GetDiaryById
-import com.example.diary.feature_diary.domain.use_case.InsertDiary
+import com.example.diary.feature_diary.domain.use_case.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -44,7 +41,8 @@ object AppModule {
         return DiaryUseCases(
             getDiaries = GetDiaries(repository),
             getDiaryById = GetDiaryById(repository),
-            insertDiary = InsertDiary(repository)
+            insertDiary = InsertDiary(repository),
+            deleteDiary = DeleteDiary(repository)
         )
     }
 
