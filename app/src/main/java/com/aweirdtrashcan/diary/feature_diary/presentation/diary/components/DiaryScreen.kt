@@ -25,7 +25,6 @@ import com.aweirdtrashcan.diary.feature_diary.presentation.diary.DiaryViewModel
 import com.aweirdtrashcan.diary.feature_diary.presentation.util.Screen
 import com.aweirdtrashcan.diary.feature_diary.presentation.util.UiBarsColors
 import com.aweirdtrashcan.diary.ui.theme.blackSystemBar
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @Composable
